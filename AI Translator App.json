@@ -1,0 +1,94 @@
+{
+  "name": "AI Translator App",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7f63aead-efde-42f8-b5a9-9cdc3bc4eb11",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -432,
+        -64
+      ],
+      "id": "b060999e-bbb1-4b2a-b974-cfebd8406ec3",
+      "name": "Webhook",
+      "webhookId": "7f63aead-efde-42f8-b5a9-9cdc3bc4eb11"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a translation assistant. Translate the following text into the target language. \nDo not add extra words. Do not change the meaning. \nReturn only the translated text.\n\nText: {{ $json.body.input }}\nTarget Language: {{ $json.body.language }}\n",
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -224,
+        -64
+      ],
+      "id": "e17d5241-f59a-4537-9903-25ba55bfe5d9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        128
+      ],
+      "id": "1c1c486d-1e42-44a0-a6e9-988774c96efa",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tCIbmcqxkMN9jtx9",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "146ffe79-f186-413b-97bc-100d6df651a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6c40e12b1fb3e9d4cecfd75072d50b68c6828cde20f67fd3a80e9201af451922"
+  },
+  "id": "OTjqulBi70u6Xs2U",
+  "tags": []
+}
